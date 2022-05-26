@@ -9,7 +9,6 @@ import Navigation from './Navigation';
 import LoginForm from './LoginForm';
 import MessageForm from './MessagesForm';
 import Messages from './Messages';
-import Message from './Message';
 import { About } from './About';
 import { NotFound } from './NotFound';
 import { MessageDetail } from './MessageDetail';
@@ -36,7 +35,9 @@ function App() {
       user: loggedInUser,
     };
 
-    setMessageList((messageList) => [message, ...messageList]);
+    // gets messageList then appends the message to the top
+    setMessageList((messageList) => [...messageList, message]);
+    console.log(messageList);
   };
 
   function nextId(data) {
@@ -45,14 +46,13 @@ function App() {
     }
 
     data.sort((a, b) => a.id - b.id);
-    const sortedData = data[data.length - 1].id + 1;
-    return sortedData;
+    const nextId = data[data.length - 1].id + 1;
+    return nextId;
   }
 
   return (
     <div className="App">
       <h1>Jitter</h1>
-
       {/* if no loggedInUser, render login form otherwise render message form*/}
       {/* {!loggedInUser ? (
         <LoginForm activateUser={activateUser} />
@@ -87,9 +87,7 @@ function App() {
             />
             <Route
               path=":messageId"
-              element={
-                <Message message={MessageDetail} messageList={messageList} />
-              }
+              element={<MessageDetail messageList={messageList} />}
             />
           </Route>
           <Route path="about" element={<About />} />

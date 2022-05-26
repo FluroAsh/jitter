@@ -21,7 +21,6 @@ export const MessageDetail = ({ messageList }) => {
       ) : (
         <Link to="messages">Go back to home page</Link>
       )}
-      <p>Random</p>
     </>
   );
 };
