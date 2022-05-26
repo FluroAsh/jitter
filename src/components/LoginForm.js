@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = ({ activateUser }) => {
   // object to store intial values
@@ -9,11 +10,13 @@ const LoginForm = ({ activateUser }) => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     activateUser(formData.username);
     setFormData(initialFormData);
+    navigate('/messages');
   };
 
   // include previous object, then assign key (id) a new value (value)

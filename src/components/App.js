@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from 'react-router-dom';
 import Navigation from './Navigation';
 import LoginForm from './LoginForm';
 import MessageForm from './MessagesForm';
 import Messages from './Messages';
+import Message from './Message';
+import { About } from './About';
+import { NotFound } from './NotFound';
+import { MessageDetail } from './MessageDetail';
 import initialMessageList from '../Data/message-list.json';
 
 function App() {
@@ -21,7 +31,7 @@ function App() {
   const addMessage = (text) => {
     const message = {
       // TODO: needs refactoring, as we will be getting id: 4 every time...
-      id: messageList.slice(-1).id + 1, // UID as we add additional messages
+      id: nextId(messageList), // UID as we add additional messages
       text: text,
       user: loggedInUser,
     };
@@ -29,17 +39,67 @@ function App() {
     setMessageList((messageList) => [message, ...messageList]);
   };
 
+  function nextId(data) {
+    if (data.length === 0) {
+      return 1;
+    }
+
+    data.sort((a, b) => a.id - b.id);
+    const sortedData = data[data.length - 1].id + 1;
+    return sortedData;
+  }
+
   return (
     <div className="App">
       <h1>Jitter</h1>
-      <Navigation loggedInUser={loggedInUser} activateUser={activateUser} />
+
       {/* if no loggedInUser, render login form otherwise render message form*/}
-      {!loggedInUser ? (
+      {/* {!loggedInUser ? (
         <LoginForm activateUser={activateUser} />
       ) : (
         <MessageForm loggedInUser={loggedInUser} addMessage={addMessage} />
-      )}
-      <Messages messageList={messageList} />
+      )} */}
+
+      {/* Wrap all the components involved in the apps routing */}
+      {/* <Messages messageList={messageList} /> */}
+
+      <Router>
+        {/* Needs to be inside the Router component because it uses the Link component */}
+        <Navigation loggedInUser={loggedInUser} activateUser={activateUser} />
+        <Routes>
+          <Route path="/" element={<Navigate to="messages" replace />} />
+          {/* Nested routes for 'messages' */}
+          <Route path="messages">
+            <Route index element={<Messages messageList={messageList} />} />
+            {/* If user isn't logged in, redirect them to the login page */}
+            <Route
+              path="new"
+              element={
+                loggedInUser ? (
+                  <MessageForm
+                    loggedInUser={loggedInUser}
+                    addMessage={addMessage}
+                  />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path=":messageId"
+              element={
+                <Message message={MessageDetail} messageList={messageList} />
+              }
+            />
+          </Route>
+          <Route path="about" element={<About />} />
+          <Route
+            path="login"
+            element={<LoginForm activateUser={activateUser} />}
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
