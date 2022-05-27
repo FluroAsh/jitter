@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const Message = ({ message }) => {
+export const Message = ({ message }) => {
   return (
     <>
       <h4>{message.user}</h4>
@@ -10,5 +10,3 @@ const Message = ({ message }) => {
     </>
   );
 };
-
-export default Message;

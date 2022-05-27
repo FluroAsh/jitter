@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalState } from '../utils/stateContext';
 
-const LoginForm = ({ activateUser }) => {
+export const LoginForm = () => {
+  const { dispatch } = useGlobalState();
+  const navigate = useNavigate();
+
   // object to store intial values
   // can change theses values in the object (formData) later
   const initialFormData = {
@@ -10,13 +14,16 @@ const LoginForm = ({ activateUser }) => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
-  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    activateUser(formData.username);
-    setFormData(initialFormData);
-    navigate('/messages');
+    // activateUser(formData.username);
+    dispatch({
+      type: 'setLoggedInUser',
+      data: formData.username,
+    });
+    setFormData(initialFormData); // resets formData state
+    navigate('/messages'); // re-route to home ('/messages')
   };
 
   // include previous object, then assign key (id) a new value (value)
@@ -25,8 +32,6 @@ const LoginForm = ({ activateUser }) => {
       ...formData,
       [event.target.id]: event.target.value,
     });
-
-    console.log(formData.username, formData.password);
   };
 
   return (
@@ -57,5 +62,3 @@ const LoginForm = ({ activateUser }) => {
     </>
   );
 };
-
-export default LoginForm;

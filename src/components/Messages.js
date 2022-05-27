@@ -1,6 +1,9 @@
-import Message from './Message';
+import { useGlobalState } from '../utils/stateContext';
+import { Message } from './Message';
 
-const Messages = ({ messageList }) => {
+export const Messages = () => {
+  const { store } = useGlobalState();
+  const { messageList } = store;
   return (
     <>
       {/* the first message is the prop, the 2nd is the iterator */}
@@ -10,5 +13,3 @@ const Messages = ({ messageList }) => {
     </>
   );
 };
-
-export default Messages;

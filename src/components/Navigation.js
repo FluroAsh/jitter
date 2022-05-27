@@ -1,10 +1,20 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useGlobalState } from '../utils/stateContext';
 
-const Navigation = ({ loggedInUser, activateUser }) => {
+export const Navigation = () => {
+  // don't need to include dispatch in the object
+  // as we're not setting the state
+  const { store, dispatch } = useGlobalState();
+  const { loggedInUser } = store;
+
   const navigate = useNavigate(); // hook to retrieve 'history'
+
   const logout = (event) => {
     event.preventDefault();
-    activateUser('');
+    dispatch({
+      type: 'setLoggedInUser',
+      data: '',
+    });
     navigate('/messages'); // redirects to "/messages"
   };
 
@@ -30,5 +40,3 @@ const Navigation = ({ loggedInUser, activateUser }) => {
     </nav>
   );
 };
-
-export default Navigation;

@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalState } from '../utils/stateContext';
 
-const MessageForm = ({ loggedInUser, addMessage }) => {
+export const MessageForm = () => {
+  const { store, dispatch } = useGlobalState();
+  const { loggedInUser, messageList } = store;
   const navigate = useNavigate();
   const initialFormData = {
     text: '',
@@ -14,8 +17,6 @@ const MessageForm = ({ loggedInUser, addMessage }) => {
       ...formData,
       [event.target.id]: event.target.value,
     });
-
-    console.log(formData.text);
   };
 
   const handleSubmit = (event) => {
@@ -30,6 +31,29 @@ const MessageForm = ({ loggedInUser, addMessage }) => {
     }
     console.log(formData.text);
   };
+
+  const addMessage = (text) => {
+    const message = {
+      id: messageList[0].id + 1, // UID as we add additional messages
+      text: text,
+      user: loggedInUser,
+    };
+
+    dispatch({
+      type: 'addMessage',
+      data: message, // appends to the top of messageList
+    });
+  };
+
+  // function nextId(data) {
+  //   if (data.length === 0) {
+  //     return 1;
+  //   }
+
+  //   data.sort((a, b) => a.id - b.id);
+  //   const nextId = data[data.length - 1].id + 1;
+  //   return nextId;
+  // }
 
   // clears the text area
   const clearMessage = () => {
@@ -56,5 +80,3 @@ const MessageForm = ({ loggedInUser, addMessage }) => {
     </>
   );
 };
-
-export default MessageForm;
