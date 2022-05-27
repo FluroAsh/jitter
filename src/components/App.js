@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import {
   BrowserRouter as Router,
   Navigate,
@@ -13,31 +13,49 @@ import { About } from './About';
 import { NotFound } from './NotFound';
 import { MessageDetail } from './MessageDetail';
 import initialMessageList from '../Data/message-list.json';
+import { reducer } from '../utils/reducer';
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState('');
-  const [messageList, setMessageList] = useState(initialMessageList);
+  // !! 'useReducer' handles all the states in the same object
+  const initialState = {
+    messageList: initialMessageList,
+    loggedInUser: '',
+  };
+  /**
+   * 'useReducer' receives 2 arguments (reducer, state)
+   * reducer -> is the function
+   */
+  const [store, dispatch] = useReducer(reducer, initialState);
+  const { messageList, loggedInUser } = store;
 
   const activateUser = (username) => {
-    setLoggedInUser(username);
+    dispatch({
+      type: 'setLoggedInUser',
+      // don't actually need password just testing it...
+      data: [username, 'password'],
+    });
+    // setLoggedInUser(username);
   };
 
   useEffect(() => {
     // usually a fetch (but currently static in json)
-    setMessageList(initialMessageList); // simulates the fetch
+    dispatch({
+      type: 'setMessageList',
+      data: initialMessageList,
+    });
   }, []);
 
   const addMessage = (text) => {
     const message = {
-      // TODO: needs refactoring, as we will be getting id: 4 every time...
       id: nextId(messageList), // UID as we add additional messages
-      text: text,
       user: loggedInUser,
+      text: text,
     };
 
-    // gets messageList then appends the message to the top
-    setMessageList((messageList) => [...messageList, message]);
-    console.log(messageList);
+    dispatch({
+      type: 'addMessage',
+      data: message, // appends to the top of messageList
+    });
   };
 
   function nextId(data) {
@@ -49,6 +67,8 @@ function App() {
     const nextId = data[data.length - 1].id + 1;
     return nextId;
   }
+
+  console.log(messageList);
 
   return (
     <div className="App">
