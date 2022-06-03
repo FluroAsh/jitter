@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalState } from '../utils/stateContext';
+import { Button, FormLabel, TextareaAutosize, TextField } from '@mui/material';
 
 export const MessageForm = () => {
   const { store, dispatch } = useGlobalState();
@@ -63,19 +64,26 @@ export const MessageForm = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <label>Message</label>
+        <FormLabel>Message</FormLabel>
         <div>
-          <textarea
+          <TextField
+            multiline={true}
+            maxrows={4}
             type="text"
             name="text"
             id="text"
             placeholder={`What's on your mind ${loggedInUser}?`}
             value={formData.text}
             onChange={handleFormData}
-          ></textarea>
+          ></TextField>
         </div>
-        <input type="submit" value="Post" />
-        <button onClick={clearMessage}>Clear</button>
+        {/* <input type="submit" value="Post" /> */}
+        <Button variant="contained" type="submit" value="Post">
+          Post
+        </Button>
+        <Button variant="contained" onClick={clearMessage}>
+          Clear
+        </Button>
       </form>
     </>
   );

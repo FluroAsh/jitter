@@ -8,7 +8,12 @@ export const Messages = () => {
     <>
       {/* the first message is the prop, the 2nd is the iterator */}
       {messageList
-        .map((message) => <Message key={message.id} message={message} />)
+        .map((message) => (
+          <Message
+            key={message.id}
+            message={message}
+          />
+        ))
         .reverse()}
     </>
   );

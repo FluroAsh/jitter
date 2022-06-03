@@ -5,6 +5,7 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
+// import axios from 'axios';
 import { Navigation } from './Navigation';
 import { LoginForm } from './LoginForm';
 import { MessageForm } from './MessagesForm';
@@ -15,6 +16,7 @@ import { NotFound } from './NotFound';
 import { MessageDetail } from './MessageDetail';
 import { reducer } from '../utils/reducer';
 import { StateContext } from '../utils/stateContext';
+import { Typography } from '@mui/material';
 
 function App() {
   // !! 'useReducer' handles all the states in the same object
@@ -30,16 +32,21 @@ function App() {
   const { loggedInUser } = store;
 
   useEffect(() => {
-    // usually a fetch (but currently static in json)
-    dispatch({
-      type: 'setMessageList',
-      data: initialMessageList,
-    });
+    // fetch('http://localhost:4000/messages')
+    //   .then((response) => response.json())
+    //   .then((data) => console.log(data));
+    // axios.get('http://localhost:4000/messages').then((response) => {
+    //   console.log(response);
+    //   dispatch({
+    //     type: 'setMessageList',
+    //     data: response.data,
+    //   });
+    // });
   }, []);
 
   return (
     <div className="App">
-      <h1>Jitter</h1>
+
       {/* if no loggedInUser, render login form otherwise render message form*/}
       {/* {!loggedInUser ? (
         <LoginForm activateUser={activateUser} />
