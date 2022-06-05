@@ -35,6 +35,7 @@ function App() {
     // fetch('http://localhost:4000/messages')
     //   .then((response) => response.json())
     //   .then((data) => console.log(data));
+    
     // axios.get('http://localhost:4000/messages').then((response) => {
     //   console.log(response);
     //   dispatch({
@@ -42,11 +43,15 @@ function App() {
     //     data: response.data,
     //   });
     // });
+
+    dispatch({
+      type: 'setMessageList',
+      data: initialState,
+    });
   }, []);
 
   return (
     <div className="App">
-
       {/* if no loggedInUser, render login form otherwise render message form*/}
       {/* {!loggedInUser ? (
         <LoginForm activateUser={activateUser} />
