@@ -36,16 +36,16 @@ export const Navigation = () => {
       .catch((err) => console.error(err));
   };
 
-  // const messages = () => {
-  //   getMessages()
-  //     .then((messages) => {
-  //       dispatch({
-  //         type: 'setMessageList',
-  //         data: messages,
-  //       });
-  //     })
-  //     .catch((err) => console.error(err));
-  // };
+  const messages = () => {
+    getMessages()
+      .then((messages) => {
+        dispatch({
+          type: 'setMessageList',
+          data: messages,
+        });
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <AppBar position="sticky">
@@ -56,7 +56,7 @@ export const Navigation = () => {
         <Tabs value={false}>
           <Tab
             label="Home"
-            // onClick={messages}
+            onClick={messages}
             component={Link}
             to="/messages"
           />

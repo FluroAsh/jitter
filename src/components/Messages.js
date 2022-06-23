@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useGlobalState } from '../utils/stateContext';
 import { Message } from './Message';
-import { useLocation, useParams } from 'react-router-dom';
-import { getMessagesByUser, getMessages } from './services/messagesServices';
+import { useLocation } from 'react-router-dom';
+import { getMessages, getMessagesByUser } from './services/messagesServices';
 
 export const Messages = () => {
   const { store, dispatch } = useGlobalState();
@@ -11,20 +11,25 @@ export const Messages = () => {
   // if useLocation().search is true, then set new messageList based on username
   // if user doesn't exist (messageList = null) then render some text "No user found!"
   let query = useLocation().search;
+  console.log(messageList, 'rendered -> outside', query);
 
   useEffect(() => {
     if (query) {
+      // if query string is present...
       let idx = query.lastIndexOf('=');
       let username = query.slice(idx + 1);
+
       getMessagesByUser(username)
-        .then((messages) =>
+        .then((messages) => {
           dispatch({
             type: 'setMessageList',
             data: messages,
-          })
-        )
+          });
+          console.log(messages, 'response -> inside effect');
+        })
         .catch((err) => console.error(err));
     } else {
+      // else render all messages
       getMessages()
         .then((messages) => {
           dispatch({
@@ -36,11 +41,11 @@ export const Messages = () => {
     }
   }, [query]);
 
-  console.log(messageList.length > 0, messageList.length, query);
-
+  // console.log(messageList.length > 0, messageList.length, query);
   return (
     <>
-      {messageList.length > 0 ? (
+      {/* messageList.error should be undefined if we return messages from the backend API */}
+      {messageList.length > 0 && !messageList.error ? (
         messageList.map((message) => (
           <Message key={message.id} message={message} />
         ))
