@@ -8,10 +8,22 @@ export const Messages = () => {
   const { store, dispatch } = useGlobalState();
   const { messageList } = store;
 
+  if (!messageList.length) {
+    console.log('All messages');
+    getMessages()
+      .then((messages) => {
+        dispatch({
+          type: 'setMessageList',
+          data: messages,
+        });
+      })
+      .catch((err) => console.error(err));
+  }
+
   // if useLocation().search is true, then set new messageList based on username
   // if user doesn't exist (messageList = null) then render some text "No user found!"
-  let query = useLocation().search;
-  console.log(messageList, 'rendered -> outside', query);
+  let query = useLocation().search; // 1. Get URL search string (either undefined or ?username=name)
+  console.log(messageList, 'rendered -> outside effect...', `query: ${query}`);
 
   useEffect(() => {
     if (query) {
@@ -19,7 +31,7 @@ export const Messages = () => {
       let idx = query.lastIndexOf('=');
       let username = query.slice(idx + 1);
 
-      getMessagesByUser(username)
+      getMessagesByUser(username) // 2. Fetch messages from API based on queryString (username)
         .then((messages) => {
           dispatch({
             type: 'setMessageList',
@@ -28,20 +40,14 @@ export const Messages = () => {
           console.log(messages, 'response -> inside effect');
         })
         .catch((err) => console.error(err));
-    } else {
-      // else render all messages
-      getMessages()
-        .then((messages) => {
-          dispatch({
-            type: 'setMessageList',
-            data: messages,
-          });
-        })
-        .catch((err) => console.error(err));
     }
-  }, [query]);
+  }, []); // 3. if Query string changes, re-execute effect
 
-  // console.log(messageList.length > 0, messageList.length, query);
+  console.log(
+    `MessageList Length > 0?: ${messageList.length > 0}\nMessageList Length: ${
+      messageList.length
+    }\nQuery string: ${query || 'undefined'}`
+  );
   return (
     <>
       {/* messageList.error should be undefined if we return messages from the backend API */}
