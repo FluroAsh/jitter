@@ -2,38 +2,40 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalState } from '../utils/stateContext';
 import { Button, InputLabel, TextField } from '@mui/material';
-import { signIn } from './services/authServices';
+import { signUp } from './services/authServices';
+import React from 'react';
 
-export const LoginForm = () => {
+function SignUpForm() {
   const { dispatch } = useGlobalState();
   const navigate = useNavigate();
 
-  // object to store intial values
-  // can change theses values in the object (formData) later
   const initialFormData = {
+    username: '',
     email: '',
     password: '',
+    password_confirmation: '',
   };
 
   const [formData, setFormData] = useState(initialFormData);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    signIn(formData)
+    console.log(formData);
+
+    signUp(formData)
       .then(({ username, jwt }) => {
-        sessionStorage.setItem('username', username);
-        sessionStorage.setItem('token', jwt);
+        console.log(username, jwt)
         dispatch({
           type: 'setLoggedInUser',
           data: username,
         });
-
         dispatch({
           type: 'setToken',
           data: jwt,
         });
       })
       .catch((err) => console.error(err));
+
     setFormData(initialFormData); // resets formData state
     navigate('/messages'); // re-route to home ('/messages')
   };
@@ -49,6 +51,16 @@ export const LoginForm = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
+        <div>
+          <InputLabel>Username:</InputLabel>
+          <TextField
+            type="text"
+            name="username"
+            id="username"
+            value={formData.username}
+            onChange={handleFormData}
+          />
+        </div>
         <div>
           <InputLabel>Email:</InputLabel>
           <TextField
@@ -69,11 +81,23 @@ export const LoginForm = () => {
             onChange={handleFormData}
           />
         </div>
+        <div>
+          <InputLabel>Confirm Password:</InputLabel>
+          <TextField
+            type="password"
+            name="password_confirmation"
+            id="password_confirmation"
+            value={formData.password_confirmation}
+            onChange={handleFormData}
+          />
+        </div>
         {/* <input type="submit" value="Login" /> */}
         <Button variant="contained" type="submit">
-          Login
+          Sign Up
         </Button>
       </form>
     </>
   );
-};
+}
+
+export default SignUpForm;

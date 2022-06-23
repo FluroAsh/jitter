@@ -10,45 +10,23 @@ import { Navigation } from './Navigation';
 import { LoginForm } from './LoginForm';
 import { MessageForm } from './MessagesForm';
 import { Messages } from './Messages';
-import initialMessageList from '../Data/message-list.json';
+// import initialMessageList from '../Data/message-list.json';
 import { About } from './About';
 import { NotFound } from './NotFound';
 import { MessageDetail } from './MessageDetail';
 import { reducer } from '../utils/reducer';
 import { StateContext } from '../utils/stateContext';
-import { Typography } from '@mui/material';
+import SignUpForm from './SignUpForm';
 
 function App() {
-  // !! 'useReducer' handles all the states in the same object
   const initialState = {
-    messageList: initialMessageList,
-    loggedInUser: '',
+    messageList: [],
+    loggedInUser: sessionStorage.getItem('username') || null,
+    token: null,
   };
-  /**
-   * 'useReducer' receives 2 arguments (reducer, state)
-   * reducer -> is the function
-   */
+
   const [store, dispatch] = useReducer(reducer, initialState);
   const { loggedInUser } = store;
-
-  useEffect(() => {
-    // fetch('http://localhost:4000/messages')
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data));
-    
-    // axios.get('http://localhost:4000/messages').then((response) => {
-    //   console.log(response);
-    //   dispatch({
-    //     type: 'setMessageList',
-    //     data: response.data,
-    //   });
-    // });
-
-    dispatch({
-      type: 'setMessageList',
-      data: initialState,
-    });
-  }, []);
 
   return (
     <div className="App">
@@ -83,9 +61,11 @@ function App() {
                 }
               />
               <Route path=":messageId" element={<MessageDetail />} />
+              <Route path="mymessages" element={<Messages />} />
             </Route>
             <Route path="about" element={<About />} />
-            <Route path="login" element={<LoginForm />} />
+            <Route path="auth/login" element={<LoginForm />} />
+            <Route path="auth/signup" element={<SignUpForm />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>

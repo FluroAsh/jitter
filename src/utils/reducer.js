@@ -16,7 +16,7 @@
  */
 
 export function reducer(state, action) {
-  console.log(state, action);
+  // console.log(state, action);
   switch (action.type) {
     case 'cleanState': {
       // resets back to default state values
@@ -27,7 +27,6 @@ export function reducer(state, action) {
     }
     case 'setMessageList': {
       // populate the 'messageList' Array with the initial values
-      console.log(state);
       return {
         ...state,
         messageList: action.data,
@@ -41,11 +40,16 @@ export function reducer(state, action) {
       };
     }
     case 'setLoggedInUser': {
-      // console.log(action.data[1]);
       // updates the loggedInUser value
       return {
         ...state,
         loggedInUser: action.data,
+      };
+    }
+    case 'setToken': {
+      return {
+        ...state,
+        token: action.data,
       };
     }
     // return state as it was previously
