@@ -62,7 +62,6 @@ function App() {
               />
               <Route path=":messageId" element={<MessageDetail />} />
               <Route path="mymessages" element={<Messages />} />
-              <Route path=":username" element={<Messages />} />
             </Route>
             <Route path="about" element={<About />} />
             <Route path="auth/login" element={<LoginForm />} />

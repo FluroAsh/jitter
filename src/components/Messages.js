@@ -8,9 +8,6 @@ export const Messages = () => {
   const { store, dispatch } = useGlobalState();
   const { messageList } = store;
 
-  let { username } = useParams();
-  console.log(username);
-
   // if useLocation().search is true, then set new messageList based on username
   // if user doesn't exist (messageList = null) then render some text "No user found!"
   let query = useLocation().search;
