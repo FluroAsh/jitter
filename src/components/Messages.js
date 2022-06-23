@@ -10,7 +10,7 @@ export const Messages = () => {
 
   // if useLocation().search is true, then set new messageList based on username
   // if user doesn't exist (messageList = null) then render some text "No user found!"
-  const query = useLocation().search;
+  let query = useLocation().search;
 
   useEffect(() => {
     if (query) {
