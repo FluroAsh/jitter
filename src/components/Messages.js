@@ -7,21 +7,9 @@ import { getMessages, getMessagesByUser } from './services/messagesServices';
 export const Messages = () => {
   const { store, dispatch } = useGlobalState();
   const { messageList } = store;
+
+  console.log('Rerendering page');
   const query = useLocation().search; // 1. Get URL search string (either undefined or ?username=name)
-
-  if (!messageList.length) {
-    console.log('All messages');
-    getMessages()
-      .then((messages) => {
-        dispatch({
-          type: 'setMessageList',
-          data: messages,
-        });
-      })
-      .catch((err) => console.error(err));
-  }
-
-  console.log(messageList, 'rendered -> outside effect...', `query: ${query}`);
 
   useEffect(() => {
     if (query) {
@@ -35,21 +23,24 @@ export const Messages = () => {
             type: 'setMessageList',
             data: messages,
           });
-          console.log(messages, 'response -> inside effect');
+        })
+        .catch((err) => console.error(err));
+    } else {
+      getMessages()
+        .then((messages) => {
+          dispatch({
+            type: 'setMessageList',
+            data: messages,
+          });
         })
         .catch((err) => console.error(err));
     }
-  }, []); // 3. if Query string changes, re-execute effect
+  }, [query]); // 3. Fire side effect if query string changes
 
-  console.log(
-    `MessageList Length > 0?: ${messageList.length > 0}\nMessageList Length: ${
-      messageList.length
-    }\nQuery string: ${query || 'undefined'}`
-  );
   return (
     <>
       {/* messageList.error should be undefined if we return messages from the backend API */}
-      {messageList.length > 0 && !messageList.error ? (
+      {messageList.length > 0 ? (
         messageList.map((message) => (
           <Message key={message.id} message={message} />
         ))

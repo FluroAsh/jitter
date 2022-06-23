@@ -1,7 +1,6 @@
 import { AppBar, Tabs, Tab, Toolbar, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGlobalState } from '../utils/stateContext';
-import { getMyMessages, getMessages } from './services/messagesServices';
 
 export const Navigation = () => {
   const { store, dispatch } = useGlobalState();
@@ -25,28 +24,6 @@ export const Navigation = () => {
     navigate('/messages'); // redirects to "/messages"
   };
 
-  const myMessages = () => {
-    getMyMessages()
-      .then((messages) => {
-        dispatch({
-          type: 'setMessageList',
-          data: messages,
-        });
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const messages = () => {
-    getMessages()
-      .then((messages) => {
-        dispatch({
-          type: 'setMessageList',
-          data: messages,
-        });
-      })
-      .catch((err) => console.error(err));
-  };
-
   return (
     <AppBar position="sticky">
       <Typography variant="h3" style={{ textAlign: 'center' }}>
@@ -54,12 +31,7 @@ export const Navigation = () => {
       </Typography>
       <Toolbar style={{ display: 'flex', justifyContent: 'center' }}>
         <Tabs value={false}>
-          <Tab
-            label="Home"
-            onClick={messages}
-            component={Link}
-            to="/messages"
-          />
+          <Tab label="Home" component={Link} to="/messages" />
           <Tab label="About" component={Link} to="/about" />
           {loggedInUser && (
             <Tab label="New message" component={Link} to="/messages/new" />
@@ -67,7 +39,6 @@ export const Navigation = () => {
           {loggedInUser && (
             <Tab
               label="My Messages"
-              onClick={myMessages}
               component={Link}
               to={`/messages?username=${loggedInUser}`}
             />
