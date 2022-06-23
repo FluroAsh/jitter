@@ -39,7 +39,6 @@ export const Messages = () => {
 
   return (
     <>
-      {/* messageList.error should be undefined if we return messages from the backend API */}
       {messageList.length > 0 ? (
         messageList.map((message) => (
           <Message key={message.id} message={message} />
