@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalState } from '../utils/stateContext';
-import { Button, FormLabel, TextareaAutosize, TextField } from '@mui/material';
+import { Button, FormLabel, TextField } from '@mui/material';
 import { createMessage } from './services/messagesServices';
 
 export const MessageForm = () => {
