@@ -15,8 +15,6 @@ export const Messages = () => {
   const location = useLocation(); // current location (/messages/mymessages etc.)
   const params = useParams(); // params from route (:username)
 
-  // console.log('>><<');
-
   useEffect(() => {
     if (location.pathname === '/messages/mymessages') {
       setError(null);
@@ -26,8 +24,7 @@ export const Messages = () => {
             type: 'setMessageList',
             data: messages,
           });
-        })
-        .catch((err) => console.error(err));
+        });
     } else if (params.username) {
       getMessagesByUser(params.username).then((messages) => {
         if (messages.error) {
@@ -42,22 +39,15 @@ export const Messages = () => {
       });
     } else {
       setError(null);
-      console.log('trying to set messages');
-      getMessages()
-        .then((messages) => {
-          dispatch({
-            type: 'setMessageList',
-            data: messages,
-          });
-        })
-        .catch((err) => console.error(err));
+      getMessages().then((messages) => {
+        dispatch({
+          type: 'setMessageList',
+          data: messages,
+        });
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]); // 3. Fire side effect if query string changes
-
-  console.log(messageList);
-  let headers = messageList[0].headers;
-  console.log(headers);
 
   return (
     <>
