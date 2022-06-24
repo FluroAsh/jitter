@@ -56,6 +56,8 @@ export const Messages = () => {
   }, [location]); // 3. Fire side effect if query string changes
 
   console.log(messageList);
+  let headers = messageList[0].headers;
+  console.log(headers);
 
   return (
     <>
