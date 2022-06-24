@@ -51,6 +51,7 @@ export const Messages = () => {
         })
         .catch((err) => console.error(err));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]); // 3. Fire side effect if query string changes
 
   return (
