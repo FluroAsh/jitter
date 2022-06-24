@@ -42,9 +42,7 @@ export const Messages = () => {
       });
     } else {
       setError(null);
-      getMessages();
-      console
-        .log('trying to set messages')
+      getMessages()
         .then((messages) => {
           dispatch({
             type: 'setMessageList',

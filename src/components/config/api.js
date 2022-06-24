@@ -8,8 +8,8 @@
 import Axios from 'axios';
 
 const jitterAPI = Axios.create({
-  // baseURL: process.env.REACT_APP_BACKEND_URL,
-  baseURL: 'https://jitter-api-at2022.herokuapp.com',
+  baseURL: process.env.REACT_APP_BACKEND_URL,
+  // baseURL: 'https://jitter-api-at2022.herokuapp.com',
 });
 
 jitterAPI.interceptors.request.use((req) => {
