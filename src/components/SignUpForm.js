@@ -17,27 +17,36 @@ function SignUpForm() {
   };
 
   const [formData, setFormData] = useState(initialFormData);
+  const [error, setError] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(formData);
 
-    signUp(formData)
-      .then(({ username, jwt }) => {
-        console.log(username, jwt)
+    signUp(formData).then((user) => {
+      console.log(user);
+      let errorMessage = '';
+      if (user.error) {
+        // convert the object into a string
+        Object.keys(user.error).forEach((key) => {
+          errorMessage = errorMessage.concat('', ` ${key} ${user.error[key]}`);
+        });
+        setError(errorMessage);
+      } else {
+        console.log(user.username, user.jwt);
+        setError(null);
         dispatch({
           type: 'setLoggedInUser',
-          data: username,
+          data: user.username,
         });
         dispatch({
           type: 'setToken',
-          data: jwt,
+          data: user.jwt,
         });
-      })
-      .catch((err) => console.error(err));
-
-    setFormData(initialFormData); // resets formData state
-    navigate('/messages'); // re-route to home ('/messages')
+        setFormData(initialFormData);
+        navigate('/messages');
+      }
+    });
   };
 
   // include previous object, then assign key (id) a new value (value)
@@ -50,6 +59,7 @@ function SignUpForm() {
 
   return (
     <>
+      {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <InputLabel>Username:</InputLabel>

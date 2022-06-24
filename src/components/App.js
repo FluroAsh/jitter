@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Navigate,
@@ -17,6 +17,7 @@ import { MessageDetail } from './MessageDetail';
 import { reducer } from '../utils/reducer';
 import { StateContext } from '../utils/stateContext';
 import SignUpForm from './SignUpForm';
+import { getMessages } from './services/messagesServices';
 
 function App() {
   const initialState = {
@@ -27,6 +28,17 @@ function App() {
 
   const [store, dispatch] = useReducer(reducer, initialState);
   const { loggedInUser } = store;
+
+  useEffect(() => {
+    getMessages()
+      .then((messages) => {
+        dispatch({
+          type: 'setMessageList',
+          data: messages,
+        });
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <div className="App">
@@ -62,6 +74,7 @@ function App() {
               />
               <Route path=":messageId" element={<MessageDetail />} />
               <Route path="mymessages" element={<Messages />} />
+              <Route path="user/:username" element={<Messages />} />
             </Route>
             <Route path="about" element={<About />} />
             <Route path="auth/login" element={<LoginForm />} />

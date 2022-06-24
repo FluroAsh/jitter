@@ -6,22 +6,21 @@ export const Navigation = () => {
   const { store, dispatch } = useGlobalState();
   const { loggedInUser } = store;
 
-  const navigate = useNavigate(); // hook to retrieve 'history'
+  const navigate = useNavigate();
 
-  const logout = (event) => {
-    event.preventDefault();
+  const logout = (e) => {
+    e.preventDefault();
     sessionStorage.clear();
-    // sessionStorage.removeItem('username'); // for single items
+    //sessionStorage.removeItem("username")
     dispatch({
       type: 'setLoggedInUser',
       data: null,
     });
-
     dispatch({
       type: 'setToken',
       data: null,
     });
-    navigate('/messages'); // redirects to "/messages"
+    navigate('/messages');
   };
 
   return (
@@ -29,18 +28,19 @@ export const Navigation = () => {
       <Typography variant="h3" style={{ textAlign: 'center' }}>
         Jitter
       </Typography>
-      <Toolbar style={{ display: 'flex', justifyContent: 'center' }}>
+      <Toolbar>
         <Tabs value={false}>
-          <Tab label="Home" component={Link} to="/messages" />
+          <Tab label="Home" value="/messages" component={Link} to="/messages" />
           <Tab label="About" component={Link} to="/about" />
           {loggedInUser && (
             <Tab label="New message" component={Link} to="/messages/new" />
           )}
           {loggedInUser && (
             <Tab
-              label="My Messages"
+              label="My messages"
+              // onClick={myMessages}
               component={Link}
-              to={`/messages?username=${loggedInUser}`}
+              to="/messages/mymessages"
             />
           )}
           {loggedInUser && (
@@ -48,14 +48,14 @@ export const Navigation = () => {
               label="Logout"
               onClick={logout}
               component={Link}
-              to="/auth/logout"
+              to="/messages"
             />
           )}
           {!loggedInUser && (
-            <Tab label="Login" component={Link} to="/auth/login" />
+            <Tab label="Login" component={Link} to="auth/login" />
           )}
           {!loggedInUser && (
-            <Tab label="Signup" component={Link} to="/auth/signup" />
+            <Tab label="Signup" component={Link} to="auth/signup" />
           )}
         </Tabs>
       </Toolbar>

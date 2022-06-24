@@ -16,26 +16,31 @@ export const LoginForm = () => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
+  const [error, setError] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    signIn(formData)
-      .then(({ username, jwt }) => {
-        sessionStorage.setItem('username', username);
-        sessionStorage.setItem('token', jwt);
+    signIn(formData).then((user) => {
+      console.log(user);
+      if (user.error) {
+        console.log('user.error', user.error);
+        setError(user.error);
+      } else {
+        setError(null);
+        sessionStorage.setItem('username', user.username);
+        sessionStorage.setItem('token', user.jwt);
         dispatch({
           type: 'setLoggedInUser',
-          data: username,
+          data: user.username,
         });
-
         dispatch({
           type: 'setToken',
-          data: jwt,
+          data: user.jwt,
         });
-      })
-      .catch((err) => console.error(err));
-    setFormData(initialFormData); // resets formData state
-    navigate('/messages'); // re-route to home ('/messages')
+        setFormData(initialFormData);
+        navigate('/messages');
+      }
+    });
   };
 
   // include previous object, then assign key (id) a new value (value)
@@ -46,8 +51,11 @@ export const LoginForm = () => {
     });
   };
 
+  console.log(error);
+
   return (
     <>
+      {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <InputLabel>Email:</InputLabel>

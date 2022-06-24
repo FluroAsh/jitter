@@ -36,7 +36,7 @@ export function reducer(state, action) {
       // receives a message & adds to the messageList
       return {
         ...state,
-        messageList: [...state.messageList, action.data],
+        messageList: [action.data, ...state.messageList],
       };
     }
     case 'setLoggedInUser': {

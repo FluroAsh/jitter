@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 
 export const Message = ({ message }) => {
   return (
-    <Link to={`${message.id}`} style={{ textDecoration: 'none' }}>
+    // absolute path
+    <Link to={`/messages/${message.id}`} style={{ textDecoration: 'none' }}>
       <Card style={{ margin: '1em 0', background: '#2255ff30' }}>
         <CardContent style={{ padding: '1em' }}>
-          <Typography variant="h5">{message.user}</Typography>
+          <Link to={`/messages/user/${message.username}`}>
+            <Typography variant="h5">{message.username}</Typography>
+          </Link>
           <Typography variant="p">{message.text}</Typography>
           <br />
           <Typography variant="p">{message.posted}</Typography>

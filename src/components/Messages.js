@@ -1,23 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useGlobalState } from '../utils/stateContext';
 import { Message } from './Message';
-import { useLocation } from 'react-router-dom';
-import { getMessages, getMessagesByUser } from './services/messagesServices';
+import { useLocation, useParams } from 'react-router-dom';
+import {
+  getMessages,
+  getMessagesByUser,
+  getMyMessages,
+} from './services/messagesServices';
 
 export const Messages = () => {
   const { store, dispatch } = useGlobalState();
   const { messageList } = store;
+  const [error, setError] = useState(null);
+  const location = useLocation(); // current location (/messages/mymessages etc.)
+  const params = useParams(); // params from route (:username)
 
-  console.log('Rerendering page');
-  const query = useLocation().search; // 1. Get URL search string (either undefined or ?username=name)
+  // console.log('>><<');
 
   useEffect(() => {
-    if (query) {
-      // if query string is present...
-      let idx = query.lastIndexOf('=');
-      let username = query.slice(idx + 1);
-
-      getMessagesByUser(username) // 2. Fetch messages from API based on queryString (username)
+    if (location.pathname === '/messages/mymessages') {
+      setError(null);
+      getMyMessages() // 2. Fetch messages from API based on queryString (username)
         .then((messages) => {
           dispatch({
             type: 'setMessageList',
@@ -25,7 +28,21 @@ export const Messages = () => {
           });
         })
         .catch((err) => console.error(err));
+    } else if (params.username) {
+      getMessagesByUser(params.username).then((messages) => {
+        if (messages.error) {
+          setError(messages.error);
+        } else {
+          setError(null);
+          dispatch({
+            type: 'setMessageList',
+            data: messages,
+          });
+        }
+      });
     } else {
+      console.log('after new message');
+      setError(null);
       getMessages()
         .then((messages) => {
           dispatch({
@@ -35,11 +52,11 @@ export const Messages = () => {
         })
         .catch((err) => console.error(err));
     }
-  }, [query]); // 3. Fire side effect if query string changes
+  }, [location]); // 3. Fire side effect if query string changes
 
   return (
     <>
-      {messageList.length > 0 ? (
+      {messageList.length > 0 && !error ? (
         messageList.map((message) => (
           <Message key={message.id} message={message} />
         ))
