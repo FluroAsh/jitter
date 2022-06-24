@@ -2,7 +2,7 @@ import jitterAPI from '../config/api';
 
 export async function getMessages() {
   const res = await jitterAPI.get('/messages');
-  // console.log(res);
+  console.log(res);
   return res.data;
 }
 

@@ -55,6 +55,8 @@ export const Messages = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]); // 3. Fire side effect if query string changes
 
+  console.log(messageList);
+
   return (
     <>
       {messageList.length > 0 && !error ? (
