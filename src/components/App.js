@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer } from 'react';
 import {
   BrowserRouter as Router,
   Navigate,
@@ -17,7 +17,7 @@ import { MessageDetail } from './MessageDetail';
 import { reducer } from '../utils/reducer';
 import { StateContext } from '../utils/stateContext';
 import SignUpForm from './SignUpForm';
-import { getMessages } from './services/messagesServices';
+// import { getMessages } from './services/messagesServices';
 
 function App() {
   const initialState = {
