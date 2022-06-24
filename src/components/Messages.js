@@ -41,7 +41,6 @@ export const Messages = () => {
         }
       });
     } else {
-      console.log('after new message');
       setError(null);
       getMessages()
         .then((messages) => {
