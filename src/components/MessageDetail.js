@@ -6,7 +6,6 @@ export const MessageDetail = () => {
   const { store } = useGlobalState();
   const { messageList } = store;
   const params = useParams();
-  console.log(params);
 
   const getMessage = (id) => {
     return messageList.find((m) => m.id === parseInt(id));

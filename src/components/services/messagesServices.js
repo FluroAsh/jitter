@@ -2,7 +2,6 @@ import jitterAPI from '../config/api';
 
 export async function getMessages() {
   const res = await jitterAPI.get('/messages');
-  console.log(res);
   return res.data;
 }
 
@@ -13,7 +12,6 @@ export async function createMessage(data) {
 
 export async function getMyMessages() {
   const res = await jitterAPI.get('/messages/mymessages');
-  console.log(res); // remove
   return res.data;
 }
 
