@@ -5,11 +5,12 @@
  */
 
 // information from the backend URL
-// import 'dotenv/config';
+// require('dotenv').config();
+
 import Axios from 'axios';
 
 const jitterAPI = Axios.create({
-  baseURL: 'https://jitter-api-at2022.herokuapp.com',
+  baseURL: process.env.REACT_APP_BACKEND_URL,
 });
 
 jitterAPI.interceptors.request.use((req) => {
