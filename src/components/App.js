@@ -29,16 +29,16 @@ function App() {
   const [store, dispatch] = useReducer(reducer, initialState);
   const { loggedInUser } = store;
 
-  useEffect(() => {
-    getMessages()
-      .then((messages) => {
-        dispatch({
-          type: 'setMessageList',
-          data: messages,
-        });
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  // useEffect(() => {
+  //   getMessages()
+  //     .then((messages) => {
+  //       dispatch({
+  //         type: 'setMessageList',
+  //         data: messages,
+  //       });
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, []);
 
   return (
     <div className="App">
