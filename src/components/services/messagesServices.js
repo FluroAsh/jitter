@@ -13,7 +13,7 @@ export async function createMessage(data) {
 
 export async function getMyMessages() {
   const res = await jitterAPI.get('/messages/mymessages');
-  console.log(res);
+  console.log(res); // remove
   return res.data;
 }
 
