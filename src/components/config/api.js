@@ -5,7 +5,6 @@
  */
 
 // information from the backend URL
-// require('dotenv').config();
 
 import Axios from 'axios';
 
