@@ -8,7 +8,7 @@
 import Axios from 'axios';
 
 const jitterAPI = Axios.create({
-  baseURL: process.env.BASE_URL,
+  baseURL: process.env.BACKEND_URL,
 });
 
 jitterAPI.interceptors.request.use((req) => {
