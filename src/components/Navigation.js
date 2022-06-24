@@ -25,10 +25,13 @@ export const Navigation = () => {
 
   return (
     <AppBar position="sticky">
-      <Typography variant="h3" style={{ textAlign: 'center' }}>
+      <Typography
+        variant="h3"
+        sx={{ textAlign: 'center', background: '#0090ff' }}
+      >
         Jitter
       </Typography>
-      <Toolbar>
+      <Toolbar sx={{ justifyContent: 'center' }}>
         <Tabs value={false}>
           <Tab label="Home" value="/messages" component={Link} to="/messages" />
           <Tab label="About" component={Link} to="/about" />

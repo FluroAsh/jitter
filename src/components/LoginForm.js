@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalState } from '../utils/stateContext';
-import { Button, InputLabel, TextField } from '@mui/material';
+import { Button, InputLabel, TextField, Typography } from '@mui/material';
 import { signIn } from './services/authServices';
 
 export const LoginForm = () => {
@@ -55,6 +55,9 @@ export const LoginForm = () => {
 
   return (
     <>
+      <Typography variant="h4" style={{ margin: '5px 0' }}>
+        Login
+      </Typography>
       {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
