@@ -57,7 +57,7 @@ function App() {
           {/* Needs to be inside the Router component because it uses the Link component */}
           <Navigation />
           <Routes>
-            <Route path="home" element={<Navigate to="messages" replace />} />
+            <Route path="/" element={<Navigate to="messages" replace />} />
             {/* Nested routes for 'messages' */}
             <Route path="messages">
               <Route index element={<Messages />} />
